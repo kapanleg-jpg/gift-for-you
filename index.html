@@ -1,88 +1,95 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>For You 💖</title>
+<title>For You ❤️</title>
 
 <style>
 body {
-  margin: 0;
-  background: radial-gradient(circle at center, #1a1a1a, #000);
-  overflow: hidden;
-  font-family: sans-serif;
-  color: white;
-  text-align: center;
+  margin:0;
+  background:black;
+  overflow:hidden;
+  font-family:sans-serif;
+  color:white;
+  text-align:center;
 }
 
 /* 🎁 กล่อง */
 .box {
-  width: 130px;
-  height: 130px;
-  background: linear-gradient(145deg, #ff3b3b, #cc0000);
-  margin: 200px auto;
-  position: relative;
-  cursor: pointer;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(255,0,0,0.4);
-  animation: float 2s infinite ease-in-out;
+  width:140px;
+  height:140px;
+  background:linear-gradient(145deg,#ff3b3b,#a80000);
+  margin:200px auto;
+  position:relative;
+  border-radius:12px;
+  cursor:pointer;
+  animation:shake 1.5s infinite ease-in-out;
 }
 
+/* ฝา */
 .lid {
-  width: 130px;
-  height: 35px;
-  background: linear-gradient(145deg, #ff6666, #ff1a1a);
-  position: absolute;
-  top: -35px;
-  left: 0;
-  border-radius: 10px 10px 0 0;
-  transform-origin: left bottom;
-  transition: 0.6s cubic-bezier(.68,-0.55,.27,1.55);
+  width:140px;
+  height:35px;
+  background:#ff5a5a;
+  position:absolute;
+  top:-35px;
+  border-radius:12px 12px 0 0;
+  transform-origin:left bottom;
+  transition:0.7s cubic-bezier(.2,1,.3,1);
 }
 
 /* ✨ แสง */
-.glow {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  top: -80px;
-  left: -80px;
-  background: radial-gradient(circle, rgba(255,100,150,0.6), transparent);
-  opacity: 0;
-  transition: 0.5s;
+.flash {
+  position:absolute;
+  width:300px;
+  height:300px;
+  background:radial-gradient(circle,rgba(255,100,150,0.8),transparent);
+  top:-80px;
+  left:-80px;
+  opacity:0;
+  transform:scale(0.5);
+  transition:0.5s;
 }
 
-/* ❤️ หัวใจ */
+/* animation */
+@keyframes shake {
+  0%,100% { transform:translateX(0) }
+  25% { transform:translateX(-5px) }
+  50% { transform:translateX(5px) }
+  75% { transform:translateX(-5px) }
+}
+
+/* ❤️ */
 .heart {
-  position: absolute;
-  font-size: 20px;
-  animation: fly 3s linear forwards;
+  position:absolute;
+  font-size:20px;
+  animation:fly 3s linear forwards;
 }
 
 @keyframes fly {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-300px) scale(1.5); opacity: 0; }
+  from { transform:translateY(0) scale(1); opacity:1 }
+  to { transform:translateY(-300px) scale(1.6); opacity:0 }
 }
 
-/* 💬 ข้อความ */
-#msg {
-  opacity: 0;
-  transition: 1s;
-  margin-top: 50px;
-  font-size: 26px;
-  white-space: pre-line;
+/* 💬 */
+#text {
+  opacity:0;
+  transition:1.5s;
+  font-size:28px;
+  margin-top:50px;
+  white-space:pre-line;
 }
 
 /* ปุ่ม */
-#btn {
-  display: none;
-  padding: 12px 25px;
-  font-size: 18px;
-  border-radius: 20px;
-  border: none;
-  background: linear-gradient(45deg, pink, hotpink);
-  cursor: pointer;
-  box-shadow: 0 0 15px pink;
+#next {
+  display:none;
+  padding:12px 30px;
+  border:none;
+  border-radius:25px;
+  background:pink;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 0 20px pink;
 }
 </style>
 </head>
@@ -91,67 +98,70 @@ body {
 
 <div class="box" id="box">
   <div class="lid" id="lid"></div>
-  <div class="glow" id="glow"></div>
+  <div class="flash" id="flash"></div>
 </div>
 
-<button id="btn">เปิดดู 💖</button>
-<div id="msg"></div>
+<button id="next">กดต่อ 💖</button>
+<div id="text"></div>
 
 <audio id="music" src="love.mp3"></audio>
 
 <script>
 const box = document.getElementById("box");
 const lid = document.getElementById("lid");
-const glow = document.getElementById("glow");
-const btn = document.getElementById("btn");
-const msg = document.getElementById("msg");
+const flash = document.getElementById("flash");
+const next = document.getElementById("next");
+const text = document.getElementById("text");
 const music = document.getElementById("music");
 
-const text = [
-"เรามีอะไรอยากบอก...",
-"ทุกช่วงเวลาที่มีเธอ มันมีค่ามากจริงๆ",
-"ถึงเราจะเคยทำพลาดไปบ้าง",
-"แต่เรารักเธอมากนะ 💖"
+const msg = [
+"มีบางอย่างอยากบอก...",
+"ทุกช่วงเวลาที่มีเธอ มันดีมากจริงๆ",
+"เราขอโทษนะที่เคยทำให้เสียใจ",
+"เรายังรักเธอเสมอ ❤️"
 ];
 
 box.onclick = () => {
-  lid.style.transform = "rotate(-60deg)";
-  glow.style.opacity = "1";
+  lid.style.transform = "rotate(-70deg)";
+  flash.style.opacity = "1";
+  flash.style.transform = "scale(1.3)";
 
-  for(let i=0;i<25;i++){
-    heart();
-  }
+  for(let i=0;i<30;i++) heart();
 
   setTimeout(()=>{
-    box.style.display = "none";
-    btn.style.display = "inline-block";
+    box.style.opacity="0";
+    box.style.transform="scale(0.5)";
+  },500);
+
+  setTimeout(()=>{
+    box.style.display="none";
+    next.style.display="inline-block";
   },1200);
 };
 
-btn.onclick = () => {
-  btn.style.display = "none";
-  msg.style.opacity = "1";
+next.onclick = () => {
+  next.style.display="none";
+  text.style.opacity="1";
   music.play();
 
   let i=0;
   function show(){
-    if(i < text.length){
-      msg.innerHTML += text[i] + "\n";
+    if(i < msg.length){
+      text.innerHTML += msg[i] + "\\n";
       i++;
-      setTimeout(show,2000);
+      setTimeout(show,2200);
     }
   }
   show();
 };
 
 function heart(){
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = "❤️";
-  h.style.left = Math.random()*100 + "vw";
-  h.style.top = "60vh";
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.top="60vh";
   document.body.appendChild(h);
-
   setTimeout(()=>h.remove(),3000);
 }
 </script>
