@@ -7,73 +7,81 @@
 <style>
 body {
   margin: 0;
-  background: linear-gradient(#0f0f0f, #1a1a1a);
+  background: radial-gradient(circle, #1a1a1a, #000);
   color: white;
   font-family: sans-serif;
   text-align: center;
   overflow: hidden;
 }
 
-/* 🎁 กล่องของขวัญ */
-#gift {
-  font-size: 100px;
-  margin-top: 150px;
+/* 🎁 กล่อง */
+.box {
+  width: 120px;
+  height: 120px;
+  background: red;
+  margin: 200px auto;
+  position: relative;
   cursor: pointer;
-  animation: move 2s infinite ease-in-out;
+  animation: float 2s infinite;
 }
 
-@keyframes move {
+.lid {
+  width: 120px;
+  height: 30px;
+  background: #ff4d4d;
+  position: absolute;
+  top: -30px;
+  transition: 0.5s;
+}
+
+@keyframes float {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  50% { transform: translateY(-15px); }
   100% { transform: translateY(0); }
 }
 
-/* ตอนกด */
-.open {
-  animation: openBox 0.5s forwards;
-}
-
-@keyframes openBox {
-  0% { transform: scale(1); }
-  100% { transform: scale(2) rotate(20deg); opacity: 0; }
-}
-
-/* 💬 ข้อความ */
-#message {
-  display: none;
-  margin-top: 50px;
-  font-size: 24px;
-  white-space: pre-line;
-}
-
-/* 👉 ปุ่ม */
-#nextBtn {
-  display: none;
-  margin-top: 30px;
-  padding: 10px 20px;
-  font-size: 18px;
-  background: pink;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+/* ✨ แสง */
+.light {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, pink, transparent);
+  top: -50px;
+  left: -40px;
+  opacity: 0;
+  transition: 0.5s;
 }
 
 /* ❤️ หัวใจ */
 .heart {
   position: absolute;
-  color: red;
-  animation: float 5s linear infinite;
+  color: pink;
+  font-size: 20px;
+  animation: rise 3s linear forwards;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(100vh);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-10vh);
-    opacity: 0;
-  }
+@keyframes rise {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-200px); opacity: 0; }
+}
+
+/* 💬 ข้อความ */
+#message {
+  display: none;
+  font-size: 24px;
+  margin-top: 50px;
+  white-space: pre-line;
+}
+
+/* 👉 ปุ่ม */
+#btn {
+  display: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  background: pink;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 </style>
@@ -81,18 +89,23 @@ body {
 
 <body>
 
-<div id="gift">🎁</div>
+<div class="box" id="box">
+  <div class="lid" id="lid"></div>
+  <div class="light" id="light"></div>
+</div>
 
-<button id="nextBtn">กดต่อ 💖</button>
-
+<button id="btn">กดดู 💖</button>
 <div id="message"></div>
 
-<audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+<audio id="music" src="love.mp3"></audio>
 
 <script>
-const gift = document.getElementById("gift");
-const message = document.getElementById("message");
-const nextBtn = document.getElementById("nextBtn");
+
+const box = document.getElementById("box");
+const lid = document.getElementById("lid");
+const light = document.getElementById("light");
+const btn = document.getElementById("btn");
+const msg = document.getElementById("message");
 const music = document.getElementById("music");
 
 const text = [
@@ -108,51 +121,50 @@ const text = [
   "ดีกันนะ โอ๋เอ๋ เราเห็นเเกสำคัญมากๆ",
   "เราอยากให้เเกได้รู้ ว่าการเป็นคนพิเศษมันดีเเค่ไหน",
   "เลยตั้งใจเขียนข้อความพวกนี้มาหาแก",
-  "หวังว่าจะเปิดโอกาสให้กันอีกครั้ง เรารอเเกตอบกลับมานะะ",
+  "หวังว่าจะเปิดโอกาสให้กันอีกครั้ง เรารอเเกตอบกลับมานะะ"
 ];
 
-gift.onclick = () => {
-  gift.classList.add("open");
+box.onclick = () => {
+  lid.style.transform = "rotate(-40deg) translateY(-20px)";
+  light.style.opacity = "1";
 
-  setTimeout(() => {
-    gift.style.display = "none";
-    nextBtn.style.display = "inline-block";
-  }, 500);
+  for(let i=0;i<15;i++){
+    createHeart();
+  }
+
+  setTimeout(()=>{
+    box.style.display = "none";
+    btn.style.display = "inline-block";
+  },1000);
 };
 
-nextBtn.onclick = () => {
-  nextBtn.style.display = "none";
-  message.style.display = "block";
+btn.onclick = () => {
+  btn.style.display = "none";
+  msg.style.display = "block";
   music.play();
 
   let i = 0;
-  function showText() {
-    if (i < text.length) {
-      message.innerHTML += text[i] + "\n";
+  function show(){
+    if(i < text.length){
+      msg.innerHTML += text[i] + "\n";
       i++;
-      setTimeout(showText, 2000);
+      setTimeout(show,2000);
     }
   }
-
-  showText();
+  show();
 };
 
-/* ❤️ สร้างหัวใจลอย */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = Math.random() * 20 + 20 + "px";
+function createHeart(){
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random()*100 + "vw";
+  h.style.top = "60vh";
+  document.body.appendChild(h);
 
-  document.body.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 5000);
+  setTimeout(()=>h.remove(),3000);
 }
 
-setInterval(createHeart, 300);
 </script>
 
 </body>
