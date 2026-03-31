@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>สำหรับเธอ 💖</title>
+
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(#0f0f0f, #1a1a1a);
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* 🎁 กล่องของขวัญ */
+#gift {
+  font-size: 100px;
+  margin-top: 150px;
+  cursor: pointer;
+  animation: move 2s infinite ease-in-out;
+}
+
+@keyframes move {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+/* ตอนกด */
+.open {
+  animation: openBox 0.5s forwards;
+}
+
+@keyframes openBox {
+  0% { transform: scale(1); }
+  100% { transform: scale(2) rotate(20deg); opacity: 0; }
+}
+
+/* 💬 ข้อความ */
+#message {
+  display: none;
+  margin-top: 50px;
+  font-size: 24px;
+  white-space: pre-line;
+}
+
+/* 👉 ปุ่ม */
+#nextBtn {
+  display: none;
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background: pink;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ❤️ หัวใจ */
+.heart {
+  position: absolute;
+  color: red;
+  animation: float 5s linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="gift">🎁</div>
+
+<button id="nextBtn">กดต่อ 💖</button>
+
+<div id="message"></div>
+
+<audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+<script>
+const gift = document.getElementById("gift");
+const message = document.getElementById("message");
+const nextBtn = document.getElementById("nextBtn");
+const music = document.getElementById("music");
+
+const text = [
+  "อะโหลล",
+  "แกยังอยากคุยกับเราอยู่มั้ย",
+  "เราขอโทษนะ ที่วันนั่นเราพิมไม่ดีใส่เเก 😓",
+  "มันอาจจะเป็นเพราะว่าเราคิดมาก",
+  "เลยทำให้พิมสิ่งที่ไม่ควรพิมใส่เเกไป",
+  "เเกยัง.... ไม่ได้เริ่มต้นใหม่ไปเเล้วใช่มั้ย",
+  "ให้โอกาสเราหน่อยได้หรือป่าว 👉👈",
+  "เราอยากให้เรากับเเก ไปกันต่อได้นานกว่านี้",
+  "ขอโทษที่เงียบเเละไม่ได้ตอบอะไรกลับไปเลย",
+  "ดีกันนะ โอ๋เอ๋ เราเห็นเเกสำคัญมากๆ",
+  "เราอยากให้เเกได้รู้ ว่าการเป็นคนพิเศษมันดีเเค่ไหน",
+  "เลยตั้งใจเขียนข้อความพวกนี้มาหาแก",
+  "หวังว่าจะเปิดโอกาสให้กันอีกครั้ง เรารอเเกตอบกลับมานะะ",
+];
+
+gift.onclick = () => {
+  gift.classList.add("open");
+
+  setTimeout(() => {
+    gift.style.display = "none";
+    nextBtn.style.display = "inline-block";
+  }, 500);
+};
+
+nextBtn.onclick = () => {
+  nextBtn.style.display = "none";
+  message.style.display = "block";
+  music.play();
+
+  let i = 0;
+  function showText() {
+    if (i < text.length) {
+      message.innerHTML += text[i] + "\n";
+      i++;
+      setTimeout(showText, 2000);
+    }
+  }
+
+  showText();
+};
+
+/* ❤️ สร้างหัวใจลอย */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 20 + "px";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 5000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
